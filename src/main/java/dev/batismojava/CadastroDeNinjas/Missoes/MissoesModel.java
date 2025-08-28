@@ -2,12 +2,17 @@ package dev.batismojava.CadastroDeNinjas.Missoes;
 
 import dev.batismojava.CadastroDeNinjas.Ninjas.NinjaModel;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-
 @Entity
 @Table(name = "Tb_missoes)")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class MissoesModel {
 
     @Id
@@ -19,28 +24,6 @@ public class MissoesModel {
     @OneToMany(mappedBy = "missoes")
     private List<NinjaModel> ninjas;
 
-    public MissoesModel(String nomeMissao, String rank) {
-        this.nome = nomeMissao;
-        this.rank = rank;
-    }
-
-    public MissoesModel() {
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getRank() {
-        return rank;
-    }
-
-    public void setRank(String rank) {
-        this.rank = rank;
-    }
 }
+
 
