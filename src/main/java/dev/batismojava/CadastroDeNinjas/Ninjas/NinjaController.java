@@ -3,7 +3,7 @@ package dev.batismojava.CadastroDeNinjas.Ninjas;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping
+@RequestMapping("ninjas")
 public class NinjaController {
 
     @GetMapping("/boasVindas")
@@ -22,7 +22,7 @@ public class NinjaController {
         return "Mostrar Ninja";
     }
     //procurar ninja por ID (create)
-    @GetMapping("/todosID")
+    @GetMapping("/listarId")
     public String mostrarTodosOsNinjasId(){
     return "Mostrar ninja por ID";
 }
