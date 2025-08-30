@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Entity
-@Table(name = "Tb_missoes)")
+@Table(name = "TB_MISSOES)")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
