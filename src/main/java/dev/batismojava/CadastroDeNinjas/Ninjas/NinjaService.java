@@ -3,8 +3,15 @@ package dev.batismojava.CadastroDeNinjas.Ninjas;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.lang.reflect.Field;
+import org.springframework.util.ReflectionUtils;
+
+
+
 
 @Service
 public class NinjaService {
@@ -26,27 +33,27 @@ public class NinjaService {
     }
 
     //Listar ninja por ID
-    public NinjaDTO listarNinjasPorId(long id){
+    public NinjaDTO listarNinjasPorId(long id) {
         Optional<NinjaModel> ninjaPorId = ninjaRepository.findById(id);
         return ninjaPorId.map(ninjaMapper::map).orElse(null);
     }
 
     //Criar novo ninja
-    public NinjaDTO criarNinja(NinjaDTO ninjaDTO){
+    public NinjaDTO criarNinja(NinjaDTO ninjaDTO) {
         NinjaModel ninja = ninjaMapper.map(ninjaDTO);
         ninja = ninjaRepository.save(ninja);
         return ninjaMapper.map(ninja);
     }
 
     //Deletar Ninja
-    public void deletarNinja(long id){
+    public void deletarNinja(long id) {
         ninjaRepository.deleteById(id);
     }
 
-    //Alterar Ninja
-    public NinjaDTO alterar(long id, NinjaDTO ninjaDTO){
+    //Alterar Tudo Ninja
+    public NinjaDTO alterar(long id, NinjaDTO ninjaDTO) {
         Optional<NinjaModel> ninjaExistente = ninjaRepository.findById(id);
-        if(ninjaExistente.isPresent()){
+        if (ninjaExistente.isPresent()) {
             NinjaModel ninjaAtualizado = ninjaMapper.map(ninjaDTO);
             ninjaAtualizado.setId(id);
             NinjaModel ninjaSalvo = ninjaRepository.save(ninjaAtualizado);
@@ -54,4 +61,26 @@ public class NinjaService {
         }
         return null;
     }
+
+    public NinjaDTO alterarParcial(long id, Map<String, Object> campos) {
+        Optional<NinjaModel> ninjaExistente = ninjaRepository.findById(id);
+
+        if (ninjaExistente.isPresent()) {
+            NinjaModel ninja = ninjaExistente.get();
+
+            campos.forEach((chave, valor) -> {
+                Field campo = ReflectionUtils.findField(NinjaModel.class, chave);
+                if (campo != null) {
+                    campo.setAccessible(true);
+                    ReflectionUtils.setField(campo, ninja, valor);
+                }
+            });
+
+            NinjaModel ninjaSalvo = ninjaRepository.save(ninja);
+            return ninjaMapper.map(ninjaSalvo);
+        }
+        return null;
+    }
+
+
 }
